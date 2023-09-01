@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { lastValueFrom } from 'rxjs'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class WeatherApiService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService, private readonly configService: ConfigService) {}
 
   async getWeatherInfo() {
     console.log('getWeatherInfo')
+    console.log(this.configService.get<string>('WEATHER_API_ACCESS_KEY'))
     const params = {
-      access_key: '4f9733e72a5191748cf128ed6ed27eef',
+      access_key: this.configService.get<string>('WEATHER_API_ACCESS_KEY'),
       query: 'New York',
       language: 'ko'
     }
